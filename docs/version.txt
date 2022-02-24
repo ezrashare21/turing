@@ -1,0 +1,5 @@
+
+--- getting the version of turingmachine ---
+
+getting the version of turingmachine is kind of clunky, so i've provided turingmachineversion.
+you can't install it with pip, just install it into the directory of your project.
