@@ -1,13 +1,15 @@
 
-# cmd 0.2.0
 # command line for turingmachine
 
 import turingmachine as turing
-import sys, os
+from importlib.metadata import version as versio
+import sys, os, turingmachineversion
 
 mac = turing.machine()
 
-program = "148;2;169;2;1a;2"
+version = sys.version_info
+
+program = ""
 
 def chtoinst(foo):
     th = hex(ord(foo))
@@ -19,12 +21,28 @@ def asm():
   while True:
     inp = input("=> ")
     inps = inp.split(" ")
-    if inps[0] == "exit":
-      return ";".join(program)
-    elif inps[0] == "pchr":
-      program.append("00;1{};2".format(inps[1]))
-    else:
-      print("error")
+    if inps[0] == "exit": return ";".join(program)
+    elif inps[0] == "pchr": program.append("00;1{};2".format(inps[1])) # my first macro!
+    elif inps[0] == "addr": program.append("0{}".format(inps[1]))
+    elif inps[0] == "addr+": program.append("4")
+    elif inps[0] == "addr-": program.append("8")
+    elif inps[0] == "cta": program.append("c")
+    elif inps[0] == "set": program.append("1{}".format(inps[1]))
+    elif inps[0] == "cel+": program.append("5")
+    elif inps[0] == "cel-": program.append("9")
+    elif inps[0] == "atc": program.append("d")
+    elif inps[0] == "oascii": program.append("2")
+    elif inps[0] == "oint": program.append("6")
+    elif inps[0] == "iascii": program.append("a")
+    elif inps[0] == "iint": program.append("e")
+    elif inps[0] == "restart": program.append("3")
+    elif inps[0] == "jnz": program.append("7")
+    elif inps[0] == "lbl": program.append("b{}".format(inps[1]))
+    elif inps[0] == "goto": program.append("f{}".format(inps[1]))
+    elif inps[0] == "pstr": program.append(";".join(list(map(chtoinst,list(inps[1])))))
+    else: print("error")
+
+print("TuringMachine Command Line (0.3.1)\nPython {}.{}.{}\nTuringMachine {}".format(version.major,version.minor,version.micro,turingmachineversion.version))
 
 while True:
     inp = input("> ")
@@ -44,6 +62,9 @@ while True:
       try:os.remove(input("Program ID: ") + ".tg")
       except:print("PROGRAM NOT FOUND")
     elif "asm" == inp:
-      program = asm()
+      progra = asm()
+      if program == "": program = progra
+      else: program += ";" + progra
     elif "list" == inp: print(program)
+    elif "clear" == inp: program = ""
     else: program = inp
