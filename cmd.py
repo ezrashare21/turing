@@ -2,14 +2,23 @@
 # command line for turingmachine
 
 import turingmachine as turing
-from importlib.metadata import version as versio
-import sys, os, turingmachineversion
+from turingmachine import turingmachineversion
+import sys, os
 
 mac = turing.machine()
 
 version = sys.version_info
 
 program = ""
+
+def lf():
+    ls = []
+    for x in os.listdir("."):
+        try:
+            if x[len(x)-3] and x[len(x)-2] == "t" and x[len(x)-1] == "g": ls.append(x)
+        except:
+            pass
+    return ls
 
 def chtoinst(foo):
     th = hex(ord(foo))
@@ -42,7 +51,7 @@ def asm():
     elif inps[0] == "pstr": program.append(";".join(list(map(chtoinst,list(inps[1])))))
     else: print("error")
 
-print("TuringMachine Command Line (0.3.1)\nPython {}.{}.{}\nTuringMachine {}".format(version.major,version.minor,version.micro,turingmachineversion.version))
+print("TuringMachine Command Line (TMCL)\nTMCL 1.0.0, Python {}.{}.{}, TuringMachine {}".format(version.major,version.minor,version.micro,turingmachineversion.version))
 
 while True:
     inp = input("> ")
@@ -67,4 +76,5 @@ while True:
       else: program += ";" + progra
     elif "list" == inp: print(program)
     elif "clear" == inp: program = ""
+    elif "ls" == inp: print("\n".join(lf()))
     else: program = inp
